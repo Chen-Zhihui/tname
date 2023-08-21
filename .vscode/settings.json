@@ -1,0 +1,17 @@
+{
+    "python.testing.pytestArgs": [
+        "./test"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": false,
+    "terminal.integrated.env.linux": {
+        "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/play"
+    },
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "${workspaceFolder}:${workspaceFolder}/play",
+        "PATH" : "${env:PATH}:C:/Program Files (x86)/Windows Kits/10/App Certification Kit"
+    },
+    "python.testing.promptToConfigure": false,
+    "jupyter.jupyterServerType": "local",
+    "jupyter.notebookFileRoot": "${workspaceFolder}",
+}
