@@ -9,8 +9,10 @@ def Home():
 
 @solara.component
 def About():
-    solara.Markdown("About")
-    
+    with solara.Column(style="min-width:100px") as main :
+        solara.Markdown("About")
+        solara.Markdown("ppppppppppppppppppppppp")
+    return main
 @solara.component 
 def Page() :
     left = solara.Text("Left")
@@ -19,8 +21,8 @@ def Page() :
     with layout.LayoutApp(
         left=left,
         right=right,
-        open_left=True,
-        open_right=True,
+        open_left=False,
+        open_right=False,
         title=title,
         ) as main:
         # calculator()
