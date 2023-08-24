@@ -126,34 +126,5 @@ def LocationMapperWidget( locations :List[Location] = [] ):
             
     return m
 
+
 # %%
-# 测试数据
-EXAMPLE_LOCATIONS = [
-    Location(name="unname1", latitude=24.2629, longitude=120.6283),
-    Location(name="unname2", latitude=24.2729, longitude=120.6383),
-    ]
-EXAMPLE_LOCATIONS_EMPTY = []
-
-# EXAMPLE_LOCATIONS = pd.DataFrame([
-#     ("unname", 24.2629, 120.6283),
-#     ("unname", 24.2729, 120.6383),
-#     ("unname", 24.2829, 120.6483),
-#     ("unname", 24.2929, 120.6583),
-#     ("unname", 24.3029, 120.6683),
-#     ], columns=["name", "latitude", "longitude"])
-# EXAMPLE_LOCATIONS_EMPTY = pd.DataFrame()
-
-@solara.component 
-def TestLocation():
-    locs, set_locs = solara.use_state(EXAMPLE_LOCATIONS)
-    with solara.Card() as main :
-        LocationMapperWidget(
-            locations = locs
-            )
-        with solara.Row(justify="center") :
-            solara.Button("Markers Set", 
-                            on_click=lambda : set_locs(EXAMPLE_LOCATIONS))
-            solara.Button("Markers Clear", 
-                            on_click=lambda : set_locs(EXAMPLE_LOCATIONS_EMPTY))
-
-    return main
