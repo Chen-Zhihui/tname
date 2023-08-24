@@ -20,11 +20,26 @@ ACT_MOVE = "move"
 ACT_SET_MARKERS = "set_marker"
 ACT_CLR_MARKERS = "clr_marker"
 
-# 
-class Location(traitlets.HasTraits):
-    name = traitlets.Unicode("")
-    latitude = traitlets.Float(0)
-    longitude = traitlets.Float(0)
+# 用Trait定义位置信息
+# class Location(traitlets.HasTraits):
+#     name = traitlets.Unicode("")
+#     latitude = traitlets.Float(0)
+#     longitude = traitlets.Float(0)
+    
+#     def create_marker(self):
+#         return ipyleaflet.Marker(
+#                 location=[self.latitude, self.longitude], 
+#                 draggable=False,
+#                 opacity=0.8,
+#                 name=self.name,            
+#         )
+
+# 用dataclass定义位置信息
+@dataclasses.dataclass(frozen=True)    
+class Location:
+    name : str = ""
+    latitude : float = 0.0
+    longitude : float = 0.0
     
     def create_marker(self):
         return ipyleaflet.Marker(
@@ -33,7 +48,8 @@ class Location(traitlets.HasTraits):
                 opacity=0.8,
                 name=self.name,            
         )
-    
+        
+# 测试数据
 EXAMPLE_LOCATIONS = [
     Location(name="unname1", latitude=24.2629, longitude=120.6283),
     Location(name="unname2", latitude=24.2729, longitude=120.6383),
@@ -67,10 +83,9 @@ def map_reducer(state: MapState, action):
     elif action_type == ACT_MOVE:
         return dataclasses.replace(state, center=payload)
     elif action_type == ACT_SET_MARKERS:
-        li = EXAMPLE_LOCATIONS
-        return dataclasses.replace(state, locations=li)
+        return dataclasses.replace(state, locations=payload)
     elif action_type == ACT_CLR_MARKERS:
-        return dataclasses.replace(state, locations=EXAMPLE_LOCATIONS_EMPTY)
+        return dataclasses.replace(state, locations=payload)
     else:
         print("invalidation action")
         return state
@@ -135,7 +150,7 @@ def Location():
                 solara.Button("Markers Set", 
                               on_click=lambda : dispatch((ACT_SET_MARKERS, EXAMPLE_LOCATIONS)))
                 solara.Button("Markers Clear", 
-                              on_click=lambda : dispatch((ACT_CLR_MARKERS, None)))
+                              on_click=lambda : dispatch((ACT_CLR_MARKERS, [])))
         
     return m
 
