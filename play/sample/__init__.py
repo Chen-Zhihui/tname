@@ -6,7 +6,7 @@ import solara
 from .splitmap import SplitMap
 from .vue import Vue
 from .refresh import Refresh
-from .location import Location
+from .location import TestLocation
 from solara.layout import LayoutApp, AppIcon
 import solara.lab
 from solara import layout 
@@ -19,7 +19,7 @@ applet = {
     "Vue" : Vue,
     "交互" : Refresh,
     "地图" : SplitMap,
-    "位置" : Location,
+    "位置" : TestLocation,
 }
 
 app_all = [ k for k in applet.keys() ]
