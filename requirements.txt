@@ -2,3 +2,7 @@ solara
 typesense
 plotly 
 pandas
+jsonlines
+faker
+faker_airtravel
+dataclasses-json
