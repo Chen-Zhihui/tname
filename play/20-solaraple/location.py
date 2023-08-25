@@ -49,6 +49,15 @@ class Location:
                 name=self.name,            
         )
         
+    @staticmethod
+    def center(ps) :
+        if len(ps) > 1:
+            lat = [ p.latitude for p in ps]
+            lon = [ p.longitude for p in ps]
+            return sum(lat)/len(lat), sum(lon)/len(lon)
+        else:
+            return 0, 0
+        
 # state and reducer
 @dataclasses.dataclass(frozen=True)
 class MapState:
@@ -86,10 +95,15 @@ class LocationMapper(leafmap.Map):
     
     def plot_markers(self):
         self.clear_markers()
+        
         for r in self.marker_locations :
             m = r.create_marker()
             self.add_layer(m)
             self.markers_of_my___.append(m)      
+        
+        if len(self.marker_locations) > 0:
+            lat, lon = Location.center(self.marker_locations)
+            self.center=(lon, lat)
            
     @traitlets.observe("marker_locations")
     def on_marker_locations_changed(self, change):
@@ -109,7 +123,7 @@ def LocationMapperWidget( locations :List[Location] = [] ):
     map_state, dispatch = solara.use_reducer(map_reducer, init_map_state)
     
     with solara.Row(justify="center") as m:
-        with solara.Column(style={"min-width": "800px"}) as main:
+        with solara.Column(style={"min-width": "600px"}) as main:
             LocationMapper.element(  # type: ignore
                 marker_locations = locations,
                 zoom=map_state.zoom,
