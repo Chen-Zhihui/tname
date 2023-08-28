@@ -6,6 +6,7 @@ import solara
 from .splitmap import SplitMap
 from .vue import Vue
 from .refresh import Refresh
+from .location2 import TestLocation2
 from .location import TestLocation
 from solara.layout import LayoutApp, AppIcon
 import solara.lab
@@ -19,6 +20,7 @@ applet = {
     "Vue" : Vue,
     "交互" : Refresh,
     "地图" : SplitMap,
+    "位置2" : TestLocation2,
     "位置" : TestLocation,
 }
 
@@ -67,8 +69,9 @@ def Layout(children=[]):
     # print("I get called before the Page component gets rendered")
     return layout.LayoutApp(children=children,
                             left=AppNavigator(applet),
+                            title="App"
                             # title=AppNavigator2,
-                            title=solara.ToggleButtonsSingle(app_current, values=app_all)
+                            # title=solara.ToggleButtonsSingle(app_current, values=app_all)
                             )
 
 @solara.component
