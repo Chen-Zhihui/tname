@@ -35,7 +35,9 @@ class Location:
                 location=[self.latitude, self.longitude], 
                 draggable=False,
                 opacity=0.8,
-                name=self.name,            
+                name=self.name,    
+                title=self.name,        
+                rise_on_hover=True,
         )
         
     @staticmethod
@@ -91,23 +93,38 @@ class LocationMapper(leafmap.Map):
     def plot_markers(self):
         self.clear_markers()
         
+        # print(f"========plot_markers: {self.marker_locations}, len(self.markers_of_my___)={len(self.markers_of_my___)}")
+        # print(f"========len(self.layers)={len(self.layers)}")
+        # print(f"self={self}")
         for r in self.marker_locations :
             m = r.create_marker()
             self.add_layer(m)
+            # print(m)
+            # print(f"========len(self.layers)={len(self.layers)}")
             self.markers_of_my___.append(m)      
         
         if len(self.marker_locations) > 0:
             lat, lon = Location.center(self.marker_locations)
             self.set_center(lon, lat)
+            
+        # print(f"========plot_markers: {self.marker_locations}, len(self.markers_of_my___)={len(self.markers_of_my___)}")
+        # print(f"========len(self.layers)={len(self.layers)}")
            
     @traitlets.observe("marker_locations")
     def on_marker_locations_changed(self, change):
+        # print(f"========on_marker_locations_changed, change={change}")
+        # print(f"self={self}")
         self.plot_markers()
         
     def clear_markers(self):
-        for m in self.markers_of_my___:  
+        # print(f"========clear_markers, len(self.markers_of_my___)={len(self.markers_of_my___)}")
+        # print(f"self={self}")
+        ms = [ i for i in self.markers_of_my___]
+        # for l in self.layers:
+        #     print(l)
+        for m in ms:  
             self.remove_layer(m)  
-        self.markers_of_my___ = []
+        self.markers_of_my___.clear()
        
 
 @solara.component
@@ -117,12 +134,13 @@ def LocationMapperWidget( locations :List[Location] = []):
     #     center=Location.center(locations)
     # )
     # map_state, dispatch = solara.use_reducer(map_reducer, init_map_state)
+    # print(f"locations={locations}")
     
     with solara.Row(justify="center") as m:
         with solara.Column(style={"min-width": "600px"}) as main:
             LocationMapper.element(  # type: ignore
                 marker_locations = locations,
-                zoom=13,
+                zoom=10,
                 # on_zoom=lambda v: dispatch((ACT_ZOOM, v)),
                 # center=init_center,
                 # on_center=lambda v: dispatch((ACT_MOVE, v)),
@@ -188,7 +206,7 @@ as_list_obj = [AliasTarget.from_dict(j) for j in as_list_init]
 as_df = pd.DataFrame(as_list_init)
 
 def create_location(a : AliasTarget):
-    return Location(name=a.name, latitude=a.location[0], longitude=a.location[1])
+    return Location(name=a.alias, latitude=a.location[0], longitude=a.location[1])
 
 @solara.component 
 def TestLocation2():
@@ -199,12 +217,12 @@ def TestLocation2():
     df, set_df = solara.use_state(pd.DataFrame(None, columns=["alias", "name", "location"]))
     with solara.Row(justify="center") as r:
         with solara.Card() as main :
-            with solara.Row(justify="center") :            
+            with solara.Column() :            
                 LocationMapperWidget(
                     locations = locs
                     )        
                 with solara.Card(title="查询") :
-                    with solara.Row() :
+                    with solara.Column() :
                         def on_query(v) :
                             if v == "" :
                                 set_df(pd.DataFrame())
@@ -212,7 +230,7 @@ def TestLocation2():
                             else:
                                 res = alias_search.query_by_alias(v)
                                 set_df(pd.DataFrame(res))
-                                set_locs( [create_location(AliasTarget.from_dict(item)) for item in df.iterrows()] )
+                                set_locs( [create_location(AliasTarget.from_dict(item)) for item in res] )
                         solara.InputText(label="输入查询条件", value=query, on_value=on_query) 
                     column, set_column = solara.use_state(cast(Optional[str], None))
                     cell, set_cell = solara.use_state(cast(Dict[str, Any], {}))

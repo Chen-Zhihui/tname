@@ -25,16 +25,22 @@ def _query_by_alias(client, alias : str):
     'q'         : alias,
     'query_by'  : 'alias',
     # 'filter_by' : 'publication_year:<1998',
-    # 'sort_by'   : 'ratings_count:desc'
+    # 'sort_by'   : 'ratings_count:desc',
+    # "drop_tokens_threshold" : 0,
+    "num_typos" : 100,
+    "min_len_1typo" : 1,
+    "min_len_2typo" : 2,
     }
     ret = client.collections[schema_name].documents.search(search_parameters)
-    # print(ret["hits"])
+    # print(ret)
     res = []
     for item in ret["hits"]:
         # print(item)
         doc = {k :item["document"][k] for k in ["alias", "name", "location"]}
-        doc["alias"] = item["highlight"]["alias"]["snippet"]
+        # doc["alias"] = item["highlight"]["alias"]["snippet"]
+        # doc["name"] = doc["alias"]
         res.append(doc)
+    # print(res)
     return res
 
 
