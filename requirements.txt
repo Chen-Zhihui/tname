@@ -6,3 +6,4 @@ jsonlines
 faker
 faker_airtravel
 dataclasses-json
+leafmap

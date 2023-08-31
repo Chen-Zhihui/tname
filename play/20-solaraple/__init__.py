@@ -7,8 +7,9 @@ from .splitmap import SplitMap
 from .vue import Vue
 from .refresh import Refresh
 from .location2 import TestLocation2
+from .message import MsgSplitter
 # from .location import TestLocation
-from solara.layout import LayoutApp, AppIcon
+# from solara.layout import LayoutApp, AppIcon
 import solara.lab
 from solara import layout 
 
@@ -17,11 +18,11 @@ applet = {
     # "poke" : Pokemom,
     # "Fruit" : Fruit,
     # "ScATTer" : Scatter,
-    "Vue" : Vue,
-    "交互" : Refresh,
-    "地图" : SplitMap,
+    # "交互" : Refresh,
+    # "地图" : SplitMap,
     # "位置" : TestLocation,
-    "位置2" : TestLocation2,
+    "别名查询" : TestLocation2,
+    "事件解析" : MsgSplitter,
 }
 
 app_all = [ k for k in applet.keys() ]
@@ -76,11 +77,13 @@ def Layout(children=[]):
 
 @solara.component
 def Page():
+    # with solara.Sidebar() :
+    #     AppNavigator(applet)
     # with solara.AppBarTitle() :
-        # with solara.Row() :
-            # solara.Title("Applet")
-            # AppNavigator(applet)
-            # solara.ToggleButtonsSingle(app_current, values=app_all)
+    #     with solara.Row() :
+    #         solara.Title("Applet")
+    #         AppNavigator(applet)
+    #         solara.ToggleButtonsSingle(app_current, values=app_all)
          
     # with solara.Sidebar() as bar:
         # solara.Text("Main")

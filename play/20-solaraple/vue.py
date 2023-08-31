@@ -15,4 +15,6 @@ def Button():
 
 @solara.component
 def Vue():
+    with solara.AppBarTitle():
+        solara.Text("别名查询")
     return Button()

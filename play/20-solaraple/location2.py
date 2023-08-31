@@ -13,6 +13,7 @@ import os
 import traitlets 
 import pandas as pd
 from . import alias_search
+from tname.fix.datatable import DataFrame
 
 DEBUG = True
 
@@ -211,6 +212,8 @@ def create_location(a : AliasTarget):
 @solara.component 
 def TestLocation2():
     # 查询条件
+    with solara.AppBarTitle():
+        solara.Text("别名查询")
     
     query, set_query = solara.use_state("") 
     locs, set_locs = solara.use_state(EXAMPLE_LOCATIONS_EMPTY)
@@ -242,6 +245,7 @@ def TestLocation2():
                         set_locs( [create_location(AliasTarget.from_dict(item))] )
                     column_actions = [solara.ColumnAction(icon="mdi-sunglasses", name="User column action", on_click=on_action_column)]
                     cell_actions = [solara.CellAction(icon="mdi-white-balance-sunny", name="显示", on_click=on_action_cell)]                    
-                    solara.DataFrame(df, items_per_page=10, column_actions=column_actions, cell_actions=cell_actions)
+                    DataFrame(df, items_per_page=10, column_actions=column_actions, cell_actions=cell_actions)
+                    
     return r
 # %%
